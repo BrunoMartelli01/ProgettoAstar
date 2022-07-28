@@ -13,12 +13,12 @@
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
-#include "WorldMap.h"
 
+#include "Dungeon.h"
 class TileMap : public sf::Drawable, public sf::Transformable {
 public:
 
-    bool load(const std::string &tileset, sf::Vector2u tileSize, const WorldMap *mapTiles, unsigned int width, unsigned int height);
+    bool load(const std::string &tileset, sf::Vector2u tileSize, const Dungeon *mapTiles, unsigned int width, unsigned int height);
 
 private:
 

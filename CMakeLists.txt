@@ -3,7 +3,7 @@ project(ProgettoAstar)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(ProgettoAstar main.cpp Astar_algorithm/findpath.cpp Astar_algorithm/findpath.h Astar_algorithm/fsa.h Astar_algorithm/stlastar.h TileMap.cpp TileMap.h WorldMap.cpp WorldMap.h)
+add_executable(ProgettoAstar main.cpp Dungeon.cpp Dungeon.h Astar_algorithm/findpath.cpp Astar_algorithm/findpath.h Astar_algorithm/fsa.h Astar_algorithm/stlastar.h TileMap.cpp TileMap.h)
 
 set(SFML_STATIC_LIBRARIES TRUE)
 set(SFML_DIR C:/SFML/lib/cmake/SFML)

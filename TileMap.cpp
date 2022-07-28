@@ -3,7 +3,7 @@
 //
 
 #include "TileMap.h"
-#include "WorldMap.h"
+
 //
 // Created by bruno on 28/07/2022.
 //
@@ -22,7 +22,7 @@ void TileMap::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(m_vertices, states);
 }
 
-bool TileMap::load(const std::string &tileset, sf::Vector2u tileSize, const WorldMap *mapTiles, unsigned int width,unsigned int height)  {
+bool TileMap::load(const std::string &tileset, sf::Vector2u tileSize, const Dungeon *mapTiles, unsigned int width, unsigned int height)  {
     // load the tileset texture
     if (!m_tileset.loadFromFile(tileset))
         return false;
@@ -35,7 +35,11 @@ bool TileMap::load(const std::string &tileset, sf::Vector2u tileSize, const Worl
     for (unsigned int i = 0; i < width; i++)
         for (unsigned int j = 0; j < height; j++) {
             // get the current tile number
-            int tileNumber = mapTiles->GetTile(i,j);
+
+
+           // int tileNumber = mapTiles->GetTile(i,j);
+            int tileNumber= mapTiles->getTileInt(i,j);
+
 
             // find its position in the tileset texture
             int tu = tileNumber % (m_tileset.getSize().x / tileSize.x);
