@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 class Character : public sf::Drawable, public sf::Transformable{
 public:
@@ -16,23 +17,24 @@ public:
     }
 
     virtual ~Character(){};
-    virtual bool moveUp()=0;
-    virtual bool moveDown() =0;
-    virtual bool moveRight()=0;
-    virtual bool moveLeft()=0;
+    virtual void moveUp()=0;
+    virtual void moveDown() =0;
+    virtual void moveRight()=0;
+    virtual void moveLeft()=0;
     virtual void nextFrame()=0;
 
-    int getPosX() const {
-        return posX;
-    }
 
-
-    int getPosY() const {
-        return posY;
-    }
-    sf::Vector2<int> getPosition(){
-        sf::Vector2<int> position( posX, posY);
+    sf::Vector2i getPosition()const{
+        sf::Vector2i position( posX, posY);
         return  position;
+    }
+    bool setPosition(sf::Vector2i position){
+        if(position.x>=0 && position.y>=0){
+            this->posX = position.x;
+            this->posY = position.y;
+            return true;
+            }
+        return false;
     }
 
 private:

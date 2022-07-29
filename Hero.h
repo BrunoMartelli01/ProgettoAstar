@@ -14,13 +14,13 @@ public:
      Hero(std::string sourceCharacter);
 
     virtual ~Hero(){};
-    bool moveUp() override;
+    void moveUp() override;
 
-    bool moveDown() override;
+    void moveDown() override;
 
-    bool moveRight() override;
+    void moveRight() override;
 
-    bool moveLeft() override;
+    void moveLeft() override;
 
     void nextFrame() override;
 
