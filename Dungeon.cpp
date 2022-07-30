@@ -19,7 +19,7 @@ using namespace std;
 
 // class constants have to be set in initializer list
 Dungeon::Dungeon() :
-        xmax(1000), ymax(100), oldseed(0), chanceRoom(
+        xmax(100), ymax(100), oldseed(0), chanceRoom(
         75), chanceCorridor(25), minRoomWidth(5), minRoomHeight(5) {
     dungeonMap = 0;
 }
@@ -55,6 +55,7 @@ bool Dungeon::makeCorridor(int x, int y, int lenght, int direction) {
     //define the dimensions of the corridor (er.. only the width and height..)
     int len = getRand(2, lenght);
     TileType floor = TileType::Corridor;
+    TileType wall = TileType::StoneWall;
     int dir = 0;
     if (direction > 0 && direction < 4)
         dir = direction;
@@ -82,7 +83,9 @@ bool Dungeon::makeCorridor(int x, int y, int lenght, int direction) {
 
             //if we're still here, let's start building
             for (ytemp = y; ytemp > (y - len); ytemp--) {
+                setCell(xtemp+1,ytemp,wall);
                 setCell(xtemp, ytemp, floor);
+                setCell(xtemp-1,ytemp,wall);
             }
             break;
         case 1:
@@ -100,7 +103,9 @@ bool Dungeon::makeCorridor(int x, int y, int lenght, int direction) {
             }
 
             for (xtemp = x; xtemp < (x + len); xtemp++) {
+                setCell(xtemp,ytemp+1,wall);
                 setCell(xtemp, ytemp, floor);
+                setCell(xtemp+1,ytemp-1,wall);
             }
             break;
         case 2:
@@ -118,7 +123,9 @@ bool Dungeon::makeCorridor(int x, int y, int lenght, int direction) {
             }
 
             for (ytemp = y; ytemp < (y + len); ytemp++) {
+                setCell(xtemp+1,ytemp,wall);
                 setCell(xtemp, ytemp, floor);
+                setCell(xtemp-1,ytemp,wall);
             }
             break;
         case 3:
@@ -136,7 +143,9 @@ bool Dungeon::makeCorridor(int x, int y, int lenght, int direction) {
             }
 
             for (xtemp = x; xtemp > (x - len); xtemp--) {
+                setCell(xtemp,ytemp+1,wall);
                 setCell(xtemp, ytemp, floor);
+                setCell(xtemp,ytemp-1,wall);
             }
             break;
     }
@@ -522,6 +531,10 @@ int Dungeon::getTileInt(int x, int y) const {
     TileType tile= getTile(x, y);
     if(tile == TileType::StoneWall || tile  == TileType::DirtWall)
         return 1;
+    if(tile == TileType::DirtFloor || tile  == TileType::Chest || tile == TileType:: UpStairs || tile ==  TileType::DownStairs || tile == TileType::Corridor)
+        return 2;
+    if(tile == TileType::Door)
+        return 3;
     return 0;
 }
 

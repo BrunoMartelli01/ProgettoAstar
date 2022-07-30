@@ -19,58 +19,6 @@ enum class TileType {
     Unused = 0, DirtWall, DirtFloor, StoneWall, Corridor, Door, UpStairs, DownStairs, Chest
 };
 
-static const char* const MAP_FILE_SIGNATURE = "DungeonMap";
-
-static std::string TileTypeToTileString(const TileType& tile) {
-    switch (tile) {
-        case TileType::Unused:
-            return " ";
-        case TileType::DirtWall:
-            return "+";
-        case TileType::DirtFloor:
-            return ".";
-        case TileType::StoneWall:
-            return "%";
-        case TileType::Corridor:
-            return "#";
-        case TileType::Door:
-            return "D";
-        case TileType::UpStairs:
-            return "<";
-        case TileType::DownStairs:
-            return ">";
-        case TileType::Chest:
-            return "*";
-        default:
-            return "";
-    };
-}
-
-static TileType TileStringToTileType(const char& tile) {
-    switch (tile) {
-        case ' ':
-            return TileType::Unused;
-        case '+':
-            return TileType::DirtWall;
-        case '.':
-            return TileType::DirtFloor;
-        case '%':
-            return TileType::StoneWall;
-        case '#':
-            return TileType::Corridor;
-        case 'D':
-            return TileType::Door;
-        case '<':
-            return TileType::UpStairs;
-        case '>':
-            return TileType::DownStairs;
-        case '*':
-            return TileType::Chest;
-        default:
-            return TileType::Unused;
-    };
-}
-
 class Dungeon {
 public:
     Dungeon();
