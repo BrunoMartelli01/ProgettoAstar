@@ -7,86 +7,82 @@
 
 Hero::Hero(std::string sourceCharacter): Character(1, 1,sourceCharacter) {
     spriteCharacter.setTexture(textureCharacter);
-    spriteCharacter.scale(0.18, 0.18);
+    spriteCharacter.scale(0.61, 0.61);
 
+    spriteCharacter.setPosition(32 , 32  );
+   // spriteCharacter.setOrigin(27.0f, 27.0f);
 
-    spriteCharacter.setPosition(32 + 16, 32 + 16 );
-    spriteCharacter.setOrigin(85.0f, 85.0f);
-
-
-    sf::IntRect rect(0,0, 170,170);
-    textureRect = rect;
-
-    spriteCharacter.setTextureRect(textureRect);
+    textureRect = sf::IntRect(0,0, 52,52);
+    spriteCharacter.setTextureRect( textureRect);
     frame = 0;
 
 }
 
 void Hero::moveUp() {
 
-    if(spriteCharacter.getScale().x<0)
-        spriteCharacter.setRotation(-90);
-    else
-        spriteCharacter.setRotation(90);
 
-        spriteCharacter.move(0, -31);
+
+
     sf::Vector2i position(0,-1);
-
+    framePositon.x = 0;
+    framePositon.y = -7.35f;
     Character::setPosition(Character::getPosition()+position);
+    textureRect=sf::IntRect(0,198, 52,52);
     return;
 
 }
 
 void Hero::moveDown() {
-    if(spriteCharacter.getScale().x < 0)
-       spriteCharacter.setRotation(90);
-    else
-        spriteCharacter.setRotation(-90);
 
-    spriteCharacter.move(0, 31);
+
     sf::Vector2i position(0,1);
-
+    framePositon.x = 0;
+    framePositon.y = 7.35f;
     Character::setPosition(Character::getPosition()+position);
+      textureRect=sf::IntRect(0,0, 52,52);
     return ;
+
 }
 
 void Hero::moveRight() {
-    spriteCharacter.setRotation(0);
-    if(spriteCharacter.getScale().x>0) {
-        spriteCharacter.scale(5.3125, 5.3125);
-        spriteCharacter.scale(-0.18823529411, 0.18823529411);
-    }
-    spriteCharacter.move(31,0 );
+
+    framePositon.y = 0;
+    framePositon.x = 7.35f;
     sf::Vector2i position(1,0);
     Character::setPosition(Character::getPosition()+position);
+    textureRect=sf::IntRect(0,132, 52,52);
 
     return;
 }
 
 void Hero::moveLeft() {
-    spriteCharacter.move(-31, 0);
-    spriteCharacter.setRotation(0);
-    if(spriteCharacter.getScale().x< 0)
-    spriteCharacter.scale(-1, 1);
-    else
-        spriteCharacter.scale(1, 1);
+    framePositon.y = 0;
+    framePositon.x = -7.35f;
+
     sf::Vector2i position(-1,0);
     Character::setPosition(Character::getPosition()+position);
+    textureRect = sf::IntRect(0,66, 52,52);
 
     return ;
 }
 
 
-void Hero::nextFrame() {
+ bool Hero::nextFrame() {
 
-
-        if (frame == 3)
+        if (frame == 4){
             frame =0;
+            textureRect.left= frame*64;
+            spriteCharacter.setPosition(Character::getPosition().x*31,Character::getPosition().y*31);
+            spriteCharacter.setTextureRect(textureRect);
+            return  false ;
+        }
 
-    textureRect.left= frame*170;
-
+     spriteCharacter.move(framePositon);
+    textureRect.left= frame*64;
     spriteCharacter.setTextureRect(textureRect);
-        frame++;
+     frame++;
+
+     return true;
 }
 
 void Hero::draw(sf::RenderTarget &target, sf::RenderStates states) const {

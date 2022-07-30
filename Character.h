@@ -21,7 +21,7 @@ public:
     virtual void moveDown() =0;
     virtual void moveRight()=0;
     virtual void moveLeft()=0;
-    virtual void nextFrame()=0;
+    virtual bool nextFrame()=0;
 
 
     sf::Vector2i getPosition()const{

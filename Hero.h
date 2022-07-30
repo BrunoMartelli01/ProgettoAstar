@@ -22,12 +22,12 @@ public:
 
     void moveLeft() override;
 
-    void nextFrame() override;
+    bool nextFrame() override;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 private:
-
+    sf::Vector2f framePositon;
     bool up = false;
 
 };

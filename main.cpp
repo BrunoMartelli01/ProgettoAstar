@@ -41,6 +41,9 @@ bool isLegalMove(int x, int y, const Dungeon &map, const Hero &h){
     int newY = h.getPosition().y +y;
     return(isLegalCell(newX,newY, map));
 }
+
+
+
 bool moveHero(Hero* h,const Dungeon* d, const sf::Event event ){
     switch(event.key.code) {
         case(sf::Keyboard::Right):
@@ -73,6 +76,7 @@ bool moveHero(Hero* h,const Dungeon* d, const sf::Event event ){
     }
     return false;
 }
+
 bool findPath(Dungeon *d, Hero * h){
 
     AStarSearch<MapSearchNode> astarsearch;
@@ -148,24 +152,21 @@ bool findPath(Dungeon *d, Hero * h){
         }
         while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
 
-        if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED )
-        {
+        if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED ) {
             cout << "Search found goal state\n";
 
             MapSearchNode *node = astarsearch.GetSolutionStart();
 
+
 #if DISPLAY_SOLUTION
             cout << "Displaying solution\n";
-#endif
-            int steps = 0;
-
             int MAP_WIDTH = d->getXsize();
             int MAP_HEIGHT = d->getYsize();
             char mapChar [ MAP_WIDTH * MAP_HEIGHT];
 
 
 
-            for(int j =0; j< MAP_HEIGHT; j++){
+         /*   for(int j =0; j< MAP_HEIGHT; j++){
                 for(int i = 0; i<MAP_WIDTH; i++){
                     if(GetMap(i,j,d) == 1)
                         mapChar[i+MAP_WIDTH*j] = ' ';
@@ -176,10 +177,7 @@ bool findPath(Dungeon *d, Hero * h){
 
             }
             mapChar[nodeStart.x+MAP_WIDTH*nodeStart.y] = 'S';
-            mapChar[nodeEnd.x+MAP_WIDTH*nodeEnd.y] = 'E';
-
-
-            MapSearchNode *precNode = node;
+            mapChar[nodeEnd.x+MAP_WIDTH*nodeEnd.y] = 'E';*/MapSearchNode *precNode = node;
             for( ;; )
             {
                 node = astarsearch.GetSolutionNext();
@@ -198,14 +196,26 @@ bool findPath(Dungeon *d, Hero * h){
 
             };
 
-            for(int j =0; j< MAP_HEIGHT; j++) {
+           /* for(int j =0; j< MAP_HEIGHT; j++) {
                 for (int i = 0; i < MAP_WIDTH; i++) {
                     cout<< mapChar[i+MAP_WIDTH*j]<<"  ";
 
                 }
                 cout<<endl;
-            }
+            }*/
             cout << "Solution steps " << steps << endl;
+#endif
+            int steps = 0;
+            MapSearchNode *precNode = node;
+            for (;;) {
+                node = astarsearch.GetSolutionNext();
+
+                if (!node)
+                    break;
+
+                steps++;
+
+            }
 
             // Once you're done with the solution you can free the nodes up
             astarsearch.FreeSolutionNodes();
@@ -220,7 +230,6 @@ bool findPath(Dungeon *d, Hero * h){
 
         // Display the number of loops the search went through
         cout << "SearchSteps : " << SearchSteps << "\n";
-
         SearchCount ++;
 
         astarsearch.EnsureMemoryFreed();
@@ -238,15 +247,9 @@ int main() {
     sf::RenderWindow window( sf::VideoMode(32*31, 18*31), "Tilemap");
     bool dungeonOk = false;
     Dungeon dungeon;
-    std::string sourceCharacter = R"(C:\Users\bruno\CLionProjects\ProgettoAstar\sprites\mage.png)";
+    std::string sourceCharacter = R"(C:\Users\bruno\CLionProjects\ProgettoAstar\sprites\hero.png)";
     Hero h(sourceCharacter);
     TileMap map;
-
-
-
-
-
-
     while(!dungeonOk) {
         dungeon.createDungeon(32, 18, 50);
         if (!map.load("C:/Users/bruno/CLionProjects/ProgettoAstar/sprites/tilemap.png", sf::Vector2u(62, 62), &dungeon,
@@ -258,7 +261,7 @@ int main() {
     // run the main loop
     sf::Clock timeFrame ;
     sf::Clock timeMove;
-
+    bool drawMove = false;
     while (window.isOpen()) {
         // handle events
         sf::Event event;
@@ -270,8 +273,13 @@ int main() {
                     window.close();
                     break;
                 case sf::Event::KeyPressed:
-                        if(moveHero(&h,&dungeon,event))
-                                findPath(&dungeon,&h);
+                        if(timeMove.getElapsedTime().asMilliseconds()>250) {
+                            if (moveHero(&h, &dungeon, event)) {
+                                findPath(&dungeon, &h);
+                                drawMove = true;
+                                timeMove.restart();
+                            }
+                        }
                         break;
 
 
@@ -284,42 +292,8 @@ int main() {
         window.draw(map );
         window.draw(h);
         // draw the map
-
-
-        // draw the map
-
-
-
-
-        /*    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && dungeon.getCell(posX,posY) == 1 ){
-                // left key is pressed: move our spriteCharacter
-                h.moveRight();
-                timeMove.restart();
-
-            }else
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || dungeon.getCell(posX,posY) == 1) {
-                // left key is pressed: move our spriteCharacter  ) {
-                // left key is pressed: move our spriteCharacter
-                h.moveLeft();
-                timeMove.restart();
-            }else
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-                // left key is pressed: move our spriteCharacter
-                h.moveUp();
-
-                timeMove.restart();
-            }else
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-                // left key is pressed: move our spriteCharacter
-                h.moveDown();
-
-
-            }
-        }*/
-
-        if(timeFrame.getElapsedTime().asMilliseconds() > 250) {
-
-            h.nextFrame();
+        if(timeFrame.getElapsedTime().asMilliseconds() > 50 && drawMove) {
+            drawMove = h.nextFrame();
             timeFrame.restart();
         }
 
