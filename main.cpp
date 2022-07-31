@@ -8,12 +8,14 @@
 #include "Dungeon.h"
 #include <Windows.h>
 #include "hero.h"
-#include "Astar_algorithm/findpath.h"
-#include "Astar_algorithm/stlastar.h"
+#include "Enemy.h"
+
+
+
 using namespace std;
 
-bool isLegalCell(int x, int y, const Dungeon &map) {
-    switch (map.getTile(x, y)) {
+bool isLegalCell(sf::Vector2i position, const Dungeon &map) {
+    switch (map.getTile(position.x, position.y)) {
         case TileType::Unused:
             return true;
         case TileType::DirtWall:
@@ -36,10 +38,12 @@ bool isLegalCell(int x, int y, const Dungeon &map) {
             return false;
     };
 }
+
 bool isLegalMove(int x, int y, const Dungeon &map, const Hero &h){
-    int newX = h.getPosition().x+ x;
-    int newY = h.getPosition().y +y;
-    return(isLegalCell(newX,newY, map));
+
+    sf::Vector2i addPosition= sf::Vector2i ( x, y);
+    addPosition += h.getPosition();
+    return(isLegalCell(addPosition, map));
 }
 
 
@@ -77,205 +81,55 @@ bool moveHero(Hero* h,const Dungeon* d, const sf::Event event ){
     return false;
 }
 
-bool findPath(Dungeon *d, Hero * h){
-
-    AStarSearch<MapSearchNode> astarsearch;
-
-    unsigned int SearchCount = 0;
-
-    const unsigned int NumSearches = 1;
-
-    while(SearchCount < NumSearches)
-    {
-
-        // Create a start state
-        MapSearchNode nodeStart(d);
-        nodeStart.x = h->getPosition().x;
-        nodeStart.y = h->getPosition().y;
-
-        // Define the goal state
-        MapSearchNode nodeEnd(d);
-        nodeEnd.x = 30;
-        nodeEnd.y = 16;
-
-        // Set Start and goal states
-
-        astarsearch.SetStartAndGoalStates( nodeStart, nodeEnd );
-
-        unsigned int SearchState;
-        unsigned int SearchSteps = 0;
-
-        do
-        {
-
-                SearchState = astarsearch.SearchStep();
-
-
-            SearchSteps++;
-
-#if DEBUG_LISTS
-
-            cout << "Steps:" << SearchSteps << "\n";
-
-			int len = 0;
-
-			cout << "Open:\n";
-			MapSearchNode *p = astarsearch.GetOpenListStart();
-			while( p )
-			{
-				len++;
-	#if !DEBUG_LIST_LENGTHS_ONLY
-				((MapSearchNode *)p)->PrintNodeInfo();
-	#endif
-				p = astarsearch.GetOpenListNext();
-
-			}
-
-			cout << "Open list has " << len << " nodes\n";
-
-			len = 0;
-
-			cout << "Closed:\n";
-			p = astarsearch.GetClosedListStart();
-			while( p )
-			{
-				len++;
-	#if !DEBUG_LIST_LENGTHS_ONLY
-				p->PrintNodeInfo();
-	#endif
-				p = astarsearch.GetClosedListNext();
-			}
-
-			cout << "Closed list has " << len << " nodes\n";
-#endif
-
-        }
-        while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
-
-        if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED ) {
-            cout << "Search found goal state\n";
-
-            MapSearchNode *node = astarsearch.GetSolutionStart();
-
-
-#if DISPLAY_SOLUTION
-            cout << "Displaying solution\n";
-            int MAP_WIDTH = d->getXsize();
-            int MAP_HEIGHT = d->getYsize();
-            char mapChar [ MAP_WIDTH * MAP_HEIGHT];
-
-
-
-         /*   for(int j =0; j< MAP_HEIGHT; j++){
-                for(int i = 0; i<MAP_WIDTH; i++){
-                    if(GetMap(i,j,d) == 1)
-                        mapChar[i+MAP_WIDTH*j] = ' ';
-                    if(GetMap(i,j, d) == 9)
-                        mapChar[i+MAP_WIDTH*j] = 'X';
-
-                }
-
-            }
-            mapChar[nodeStart.x+MAP_WIDTH*nodeStart.y] = 'S';
-            mapChar[nodeEnd.x+MAP_WIDTH*nodeEnd.y] = 'E';*/MapSearchNode *precNode = node;
-            for( ;; )
-            {
-                node = astarsearch.GetSolutionNext();
-
-                if( !node )
-                {
-                    mapChar[precNode->x+MAP_WIDTH*precNode->y] = 'E';
-                    break;
-                }
-                if(node->x == precNode->x)
-                    mapChar[node->x+MAP_WIDTH*node->y] = '|';
-                if(node->y == precNode->y)
-                    mapChar[node->x+MAP_WIDTH*node->y] = '_';
-                precNode = node;
-                steps ++;
-
-            };
-
-           /* for(int j =0; j< MAP_HEIGHT; j++) {
-                for (int i = 0; i < MAP_WIDTH; i++) {
-                    cout<< mapChar[i+MAP_WIDTH*j]<<"  ";
-
-                }
-                cout<<endl;
-            }*/
-            cout << "Solution steps " << steps << endl;
-#endif
-            int steps = 0;
-            MapSearchNode *precNode = node;
-            for (;;) {
-                node = astarsearch.GetSolutionNext();
-
-                if (!node)
-                    break;
-
-                steps++;
-
-            }
-
-            // Once you're done with the solution you can free the nodes up
-            astarsearch.FreeSolutionNodes();
-
-
-        }
-        else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED )
-        {
-            cout << "Search terminated. Did not find goal state\n";
-            return false;
-        }
-
-        // Display the number of loops the search went through
-        cout << "SearchSteps : " << SearchSteps << "\n";
-        SearchCount ++;
-
-        astarsearch.EnsureMemoryFreed();
-        return true;
-    }
-
-
-
-}
 
 int main() {
 
 
 
+
     sf::RenderWindow window( sf::VideoMode(32*31, 18*31), "Tilemap");
-    bool dungeonOk = false;
+    while (window.isOpen()) {
     Dungeon dungeon;
-    std::string sourceCharacter = R"(C:\Users\bruno\CLionProjects\ProgettoAstar\sprites\hero.png)";
-    Hero h(sourceCharacter);
+    std::string sourceCharacterH = R"(C:\Users\bruno\CLionProjects\ProgettoAstar\sprites\hero.png)";
+    Hero h(sourceCharacterH);
+    std::string sourceCharacterE = R"(C:\Users\bruno\CLionProjects\ProgettoAstar\sprites\enemy.png)";
+    bool gameOn=false;
+    Enemy e(sourceCharacterE);
+
     TileMap map;
-    while(!dungeonOk) {
+    while(!gameOn) {
         dungeon.createDungeon(32, 18, 50);
-        if (!map.load("C:/Users/bruno/CLionProjects/ProgettoAstar/sprites/tilemap.png", sf::Vector2u(62, 62), &dungeon,
-                      32, 18))
-            return -1;
-        if(findPath(&dungeon, &h))
-            dungeonOk = true;
+
+        if(e.moveEnemy(&dungeon, h.getPosition())&& isLegalCell(h.getPosition(),dungeon) && isLegalCell(e.getPosition(),dungeon)) {
+            if (!map.load("C:/Users/bruno/CLionProjects/ProgettoAstar/sprites/tilemap.png", sf::Vector2u(62, 62), &dungeon,
+                          32, 18))
+                return -1;
+
+             gameOn = true;
+        }
     }
     // run the main loop
     sf::Clock timeFrame ;
     sf::Clock timeMove;
+    bool endGame = true;
     bool drawMove = false;
-    while (window.isOpen()) {
-        // handle events
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            // check the type of the event...
-            switch (event.type) {
-                // window closed
-                case sf::Event::Closed:
-                    window.close();
-                    break;
-                case sf::Event::KeyPressed:
-                        if(timeMove.getElapsedTime().asMilliseconds()>250) {
+
+
+            while(gameOn) {
+            // handle events
+            sf::Event event;
+            while (window.pollEvent(event)) {
+                // check the type of the event...
+                switch (event.type) {
+                    // window closed
+                    case sf::Event::Closed:
+                        window.close();
+                        break;
+                    case sf::Event::KeyPressed:
+                        if (timeMove.getElapsedTime().asMilliseconds() > 250) {
+
                             if (moveHero(&h, &dungeon, event)) {
-                                findPath(&dungeon, &h);
+                                endGame=e.moveEnemy(&dungeon, h.getPosition());
                                 drawMove = true;
                                 timeMove.restart();
                             }
@@ -283,22 +137,28 @@ int main() {
                         break;
 
 
-
+                }
             }
+
+
+            window.clear();
+            window.draw(map);
+            window.draw(h);
+            window.draw(e);
+            // draw the map
+            if (timeFrame.getElapsedTime().asMilliseconds() > 50 && drawMove) {
+                drawMove = h.nextFrame();
+                e.nextFrame();
+                timeFrame.restart();
+            }
+            if(!endGame && timeMove.getElapsedTime().asSeconds()>1) {
+                gameOn = false;
+                endGame = true;
+            }
+
+            window.display();
+
         }
-
-
-        window.clear();
-        window.draw(map );
-        window.draw(h);
-        // draw the map
-        if(timeFrame.getElapsedTime().asMilliseconds() > 50 && drawMove) {
-            drawMove = h.nextFrame();
-            timeFrame.restart();
-        }
-
-
-        window.display();
 
     }
 

@@ -5,7 +5,7 @@
 #include <iostream>
 #include "Hero.h"
 
-Hero::Hero(std::string sourceCharacter): Character(1, 1,sourceCharacter) {
+Hero::Hero(std::string sourceCharacter ): Character(1, 1,sourceCharacter) {
     spriteCharacter.setTexture(textureCharacter);
     spriteCharacter.scale(0.61, 0.61);
 
@@ -24,8 +24,8 @@ void Hero::moveUp() {
 
 
     sf::Vector2i position(0,-1);
-    framePositon.x = 0;
-    framePositon.y = -7.35f;
+    framePosition.x = 0;
+    framePosition.y = -7.35f;
     Character::setPosition(Character::getPosition()+position);
     textureRect=sf::IntRect(0,198, 52,52);
     return;
@@ -36,8 +36,8 @@ void Hero::moveDown() {
 
 
     sf::Vector2i position(0,1);
-    framePositon.x = 0;
-    framePositon.y = 7.35f;
+    framePosition.x = 0;
+    framePosition.y = 7.35f;
     Character::setPosition(Character::getPosition()+position);
       textureRect=sf::IntRect(0,0, 52,52);
     return ;
@@ -46,8 +46,8 @@ void Hero::moveDown() {
 
 void Hero::moveRight() {
 
-    framePositon.y = 0;
-    framePositon.x = 7.35f;
+    framePosition.y = 0;
+    framePosition.x = 7.35f;
     sf::Vector2i position(1,0);
     Character::setPosition(Character::getPosition()+position);
     textureRect=sf::IntRect(0,132, 52,52);
@@ -56,8 +56,8 @@ void Hero::moveRight() {
 }
 
 void Hero::moveLeft() {
-    framePositon.y = 0;
-    framePositon.x = -7.35f;
+    framePosition.y = 0;
+    framePosition.x = -7.35f;
 
     sf::Vector2i position(-1,0);
     Character::setPosition(Character::getPosition()+position);
@@ -68,7 +68,6 @@ void Hero::moveLeft() {
 
 
  bool Hero::nextFrame() {
-
         if (frame == 4){
             frame =0;
             textureRect.left= frame*64;
@@ -77,21 +76,15 @@ void Hero::moveLeft() {
             return  false ;
         }
 
-     spriteCharacter.move(framePositon);
+     spriteCharacter.move(framePosition);
     textureRect.left= frame*64;
     spriteCharacter.setTextureRect(textureRect);
      frame++;
 
      return true;
+
+
 }
 
-void Hero::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-
-
-    // apply the tileset texture
-    states.transform *= getTransform();
-    // draw the vertex array
-    target.draw(spriteCharacter, states);
-}
 
 

@@ -24,10 +24,10 @@ public:
 
     bool nextFrame() override;
 
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
 
 private:
-    sf::Vector2f framePositon;
+    sf::Vector2f framePosition;
     bool up = false;
 
 };

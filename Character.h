@@ -11,22 +11,27 @@
 
 class Character : public sf::Drawable, public sf::Transformable{
 public:
-    Character(int posX, int posY, std::string spriteCharacter) : posX(posX), posY(posY) {
+    Character( const int posX, const int posY, const std::string spriteCharacter) : posX(posX), posY(posY) {
         this->textureCharacter.loadFromFile(spriteCharacter);
 
     }
-
     virtual ~Character(){};
     virtual void moveUp()=0;
     virtual void moveDown() =0;
     virtual void moveRight()=0;
     virtual void moveLeft()=0;
+
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
+        states.transform *= getTransform();
+        // draw the vertex array
+        target.draw(spriteCharacter, states);
+    }
+public:
     virtual bool nextFrame()=0;
-
-
     sf::Vector2i getPosition()const{
         sf::Vector2i position( posX, posY);
         return  position;
+
     }
     bool setPosition(sf::Vector2i position){
         if(position.x>=0 && position.y>=0){
