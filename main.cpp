@@ -86,8 +86,8 @@ int main() {
 
 
 
-
-    sf::RenderWindow window( sf::VideoMode(32*31, 18*31), "Tilemap");
+    bool closed = false;
+    sf::RenderWindow window(sf::VideoMode(32 * 31, 18 * 31), "Tilemap");
     while (window.isOpen()) {
     Dungeon dungeon;
     std::string sourceCharacterH = R"(C:\Users\bruno\CLionProjects\ProgettoAstar\sprites\hero.png)";
@@ -97,17 +97,13 @@ int main() {
     Enemy e(sourceCharacterE);
 
     TileMap map;
-    while(!gameOn) {
         dungeon.createDungeon(32, 18, 50);
-
-        if(e.moveEnemy(&dungeon, h.getPosition())&& isLegalCell(h.getPosition(),dungeon) && isLegalCell(e.getPosition(),dungeon)) {
             if (!map.load("C:/Users/bruno/CLionProjects/ProgettoAstar/sprites/tilemap.png", sf::Vector2u(62, 62), &dungeon,
                           32, 18))
                 return -1;
 
              gameOn = true;
-        }
-    }
+
     // run the main loop
     sf::Clock timeFrame ;
     sf::Clock timeMove;
@@ -123,7 +119,7 @@ int main() {
                 switch (event.type) {
                     // window closed
                     case sf::Event::Closed:
-                        window.close();
+                        closed = true;
                         break;
                     case sf::Event::KeyPressed:
                         if (timeMove.getElapsedTime().asMilliseconds() > 250) {
@@ -140,25 +136,28 @@ int main() {
                 }
             }
 
+                if (closed)
+                    break;
+                window.clear();
+                window.draw(map);
+                window.draw(h);
+                window.draw(e);
+                // draw the map
+                if (timeFrame.getElapsedTime().asMilliseconds() > 50 && drawMove) {
+                    drawMove = h.nextFrame();
+                    e.nextFrame();
+                    timeFrame.restart();
+                }
+                if (!endGame && timeMove.getElapsedTime().asMilliseconds() > 500) {
+                    gameOn = false;
+                    endGame = true;
+                }
 
-            window.clear();
-            window.draw(map);
-            window.draw(h);
-            window.draw(e);
-            // draw the map
-            if (timeFrame.getElapsedTime().asMilliseconds() > 50 && drawMove) {
-                drawMove = h.nextFrame();
-                e.nextFrame();
-                timeFrame.restart();
+                window.display();
+
             }
-            if(!endGame && timeMove.getElapsedTime().asSeconds()>1) {
-                gameOn = false;
-                endGame = true;
-            }
-
-            window.display();
-
-        }
+        if (closed)
+            window.close();
 
     }
 

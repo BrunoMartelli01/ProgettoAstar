@@ -130,13 +130,13 @@ bool Enemy::moveEnemy(Dungeon *d,const sf::Vector2i heroPosition ) {
 
             if(x==0)
                 if(y<0)
-                    moveDown();
+                    this->moveDown();
                 else
-                    moveUp();
+                    this->moveUp();
             else if(x<0)
-                    moveRight();
+                this->moveRight();
             else
-                    moveLeft();
+                this->moveLeft();
 
             if( succNode->x == heroPosition.x && succNode->y == heroPosition.y  )
                 return  false;
@@ -149,16 +149,17 @@ bool Enemy::moveEnemy(Dungeon *d,const sf::Vector2i heroPosition ) {
             astarsearch.FreeSolutionNodes();
 
         }
-        else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED )
-        {
+        else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) {
             cout << "Search terminated. Did not find goal state\n";
+
+            astarsearch.EnsureMemoryFreed();
             return false;
         }
 
         // Display the number of loops the search went through
         cout << "SearchSteps : " << SearchSteps << "\n";
 
-        astarsearch.EnsureMemoryFreed();
+    astarsearch.EnsureMemoryFreed();
         return true;
 
 

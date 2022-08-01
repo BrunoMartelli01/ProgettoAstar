@@ -22,6 +22,9 @@ enum class TileType {
 class Dungeon {
 public:
     Dungeon();
+
+    Dungeon(TileType *dungeon, int x, int y, int obj);
+
     ~Dungeon();
 
     bool createDungeon(int inx, int iny, int inobj = 10);
@@ -36,6 +39,8 @@ public:
 
 
 private:
+    bool findPath();
+
     bool makeCorridor(int x, int y, int lenght, int direction);
     bool makeRoom(int x, int y, int xlength, int ylength, int direction);
     int getRand(int min, int max);
