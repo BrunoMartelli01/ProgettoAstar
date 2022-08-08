@@ -40,7 +40,6 @@ bool isLegalCell(sf::Vector2i position, const Dungeon &map) {
 }
 
 bool isLegalMove(int x, int y, const Dungeon &map, const Hero &h){
-
     sf::Vector2i addPosition= sf::Vector2i ( x, y);
     addPosition += h.getPosition();
     return(isLegalCell(addPosition, map));
@@ -89,26 +88,26 @@ int main() {
     bool closed = false;
     sf::RenderWindow window(sf::VideoMode(32 * 31, 18 * 31), "Tilemap");
     while (window.isOpen()) {
-    Dungeon dungeon;
-    std::string sourceCharacterH = R"(C:\Users\bruno\CLionProjects\ProgettoAstar\sprites\hero.png)";
-    Hero h(sourceCharacterH);
-    std::string sourceCharacterE = R"(C:\Users\bruno\CLionProjects\ProgettoAstar\sprites\enemy.png)";
-    bool gameOn=false;
-    Enemy e(sourceCharacterE);
+        Dungeon dungeon;
 
-    TileMap map;
+        Hero h(31, 31);
+
+        bool gameOn = false;
+        Enemy e(31, 31);
+
+        TileMap map;
         dungeon.createDungeon(32, 18, 50);
-            if (!map.load("C:/Users/bruno/CLionProjects/ProgettoAstar/sprites/tilemap.png", sf::Vector2u(62, 62), &dungeon,
-                          32, 18))
-                return -1;
+        if (!map.load("C:/Users/bruno/CLionProjects/ProgettoAstar/Sprites/tilemap.png", sf::Vector2u(62, 62), &dungeon,
+                      32, 18))
+            return -1;
 
-             gameOn = true;
+        gameOn = true;
 
-    // run the main loop
-    sf::Clock timeFrame ;
-    sf::Clock timeMove;
-    bool endGame = true;
-    bool drawMove = false;
+        // run the main loop
+        sf::Clock timeFrame;
+        sf::Clock timeMove;
+        bool endGame = true;
+        bool drawMove = false;
 
 
             while(gameOn) {
@@ -148,7 +147,7 @@ int main() {
                     e.nextFrame();
                     timeFrame.restart();
                 }
-                if (!endGame && timeMove.getElapsedTime().asMilliseconds() > 500) {
+                if (!endGame && timeMove.getElapsedTime().asMilliseconds() > 150) {
                     gameOn = false;
                     endGame = true;
                 }

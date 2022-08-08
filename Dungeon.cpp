@@ -28,8 +28,6 @@ Dungeon::Dungeon() :
 Dungeon::Dungeon(TileType *dungeon, int xSize, int ySize, int objcets) : xmax(100), ymax(100), oldseed(0), chanceRoom(
         75), chanceCorridor(25), minRoomWidth(5), minRoomHeight(5), xsize(xSize), ysize(ySize), objects(objcets) {
     dungeonMap = dungeon;
-
-
 }
 
 Dungeon::~Dungeon() {
@@ -70,14 +68,14 @@ bool Dungeon::findPath() {
 
 
     if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED) {
-        cout << "strada trovata" << endl;
+       // cout << "strada trovata" << endl;
         astarsearch.FreeSolutionNodes();
 
         astarsearch.EnsureMemoryFreed();
         return true;
     } else
         astarsearch.EnsureMemoryFreed();
-    cout << "strada NON trovata" << endl;
+    //cout << "strada NON trovata" << endl;
 
     return false;
 }

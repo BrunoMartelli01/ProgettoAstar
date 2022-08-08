@@ -8,22 +8,14 @@
 #include "Dungeon.h"
 #include "Astar_algorithm/findpath.h"
 
-class Enemy: public  Character{
+class Enemy : public Character {
 public:
-    Enemy(std::string sourceCharacter);
-    void moveUp() override;
+    Enemy(int tileWidth = 31, int tileHeight = 31);
 
-    void moveDown() override;
+    ~Enemy() {};
 
-    void moveRight() override;
-
-    void moveLeft() override;
-
-    bool nextFrame() override;
     bool moveEnemy(Dungeon *d, const sf::Vector2i heroPosition);
 
-private:
-    sf::Vector2f  framePosition;
 };
 
 
