@@ -13,6 +13,7 @@
 #define DUNGEON_H_
 
 #include <iostream>
+#include <SFML/System/Vector2.hpp>
 
 
 enum class TileType {
@@ -28,25 +29,37 @@ public:
     ~Dungeon();
 
     bool createDungeon(int inx, int iny, int inobj = 10);
+
     TileType getTile(int x, int y) const;
+
     int getTileInt(int x, int y) const;
+
     int getCell(int x, int y) const;
+
     int getXsize() const;
+
     void setXsize(int xsize);
 
     int getYsize() const;
+
     void setYsize(int ysize);
 
+    bool isLegalCell(sf::Vector2i position) const;
+
+    bool isLegalMove(int x, int y, const sf::Vector2i position) const;
 
 private:
     bool findPath();
 
     bool makeCorridor(int x, int y, int lenght, int direction);
+
     bool makeRoom(int x, int y, int xlength, int ylength, int direction);
+
     int getRand(int min, int max);
+
     void setCell(int x, int y, TileType tile);
 
-    TileType* dungeonMap;
+    TileType *dungeonMap;
     //size of the map
     int xsize, ysize;
 

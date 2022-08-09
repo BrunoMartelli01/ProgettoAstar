@@ -1,7 +1,5 @@
 #include <iostream>
 #include <SFML/Graphics/RenderWindow.hpp>
-
-
 #include<SFML/Graphics.hpp>
 #include <SFML/Window/Event.hpp>
 #include "TileMap.h"
@@ -13,73 +11,6 @@
 
 
 using namespace std;
-
-bool isLegalCell(sf::Vector2i position, const Dungeon &map) {
-    switch (map.getTile(position.x, position.y)) {
-        case TileType::Unused:
-            return true;
-        case TileType::DirtWall:
-            return false;
-        case TileType::DirtFloor:
-            return true;
-        case TileType::StoneWall:
-            return false;
-        case TileType::Corridor:
-            return true;
-        case TileType::Door:
-            return true;
-        case TileType::UpStairs:
-            return true;
-        case TileType::DownStairs:
-            return true;
-        case TileType::Chest:
-            return true;
-        default:
-            return false;
-    };
-}
-
-bool isLegalMove(int x, int y, const Dungeon &map, const Hero &h){
-    sf::Vector2i addPosition= sf::Vector2i ( x, y);
-    addPosition += h.getPosition();
-    return(isLegalCell(addPosition, map));
-}
-
-
-
-bool moveHero(Hero* h,const Dungeon* d, const sf::Event event ){
-    switch(event.key.code) {
-        case(sf::Keyboard::Right):
-
-            if(isLegalMove(1,0, *d,*h)) {
-                h->moveRight();
-                return true;
-            }
-            break;
-        case(sf::Keyboard::Left):
-            if(isLegalMove(-1,0, *d,*h)) {
-                h->moveLeft();
-                return true;
-            }
-            break;
-
-        case(sf::Keyboard::Up):
-            if(isLegalMove(0,-1, *d,*h)) {
-                h->moveUp();
-                return true;
-            }
-            break;
-        case(sf::Keyboard::Down):
-            if(isLegalMove(0,1, *d,*h)) {
-                h->moveDown();
-                return true;
-            }
-            break;
-        default: break;
-    }
-    return false;
-}
-
 
 int main() {
 
@@ -123,8 +54,8 @@ int main() {
                     case sf::Event::KeyPressed:
                         if (timeMove.getElapsedTime().asMilliseconds() > 250) {
 
-                            if (moveHero(&h, &dungeon, event)) {
-                                endGame=e.moveEnemy(&dungeon, h.getPosition());
+                            if (h.moveHero(&dungeon, event)) {
+                                endGame = e.moveEnemy(&dungeon, h.getPosition());
                                 drawMove = true;
                                 timeMove.restart();
                             }

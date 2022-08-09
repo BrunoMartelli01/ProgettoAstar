@@ -13,6 +13,7 @@
 #include "Dungeon.h"
 #include "Astar_algorithm/findpath.h"
 #include <time.h>
+#include <SFML/System/Vector2.hpp>
 // uncomment to get some additional debugging prints. Check how conditional compilation works
 //#define VERBOSE
 
@@ -588,10 +589,41 @@ int Dungeon::getTileInt(int x, int y) const {
 }
 
 int Dungeon::getCell(int x, int y) const {
-    TileType tile= getTile(x, y);
-    if(tile == TileType::StoneWall || tile  == TileType::DirtWall)
+    TileType tile = getTile(x, y);
+    if (tile == TileType::StoneWall || tile == TileType::DirtWall)
         return 9;
     return 1;
 }
 
+
+bool Dungeon::isLegalMove(int x, int y, const sf::Vector2i position) const {
+    sf::Vector2i addPosition = sf::Vector2i(x, y);
+    addPosition += position;
+    return (this->isLegalCell(addPosition));
+}
+
+bool Dungeon::isLegalCell(sf::Vector2i position) const {
+    switch (this->getTile(position.x, position.y)) {
+        case TileType::Unused:
+            return true;
+        case TileType::DirtWall:
+            return false;
+        case TileType::DirtFloor:
+            return true;
+        case TileType::StoneWall:
+            return false;
+        case TileType::Corridor:
+            return true;
+        case TileType::Door:
+            return true;
+        case TileType::UpStairs:
+            return true;
+        case TileType::DownStairs:
+            return true;
+        case TileType::Chest:
+            return true;
+        default:
+            return false;
+    };
+}
 

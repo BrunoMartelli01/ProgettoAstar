@@ -10,13 +10,16 @@
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include "Character.h"
-class Hero : public Character{
+#include <SFML/Window/Event.hpp>
+#include "Dungeon.h"
+
+class Hero : public Character {
 public:
     Hero(int tileWidth = 31, int tileHeight = 31);
 
-    virtual ~Hero(){};
+    virtual ~Hero() {};
 
-
+    bool moveHero(const Dungeon *d, const sf::Event event);
 
 
 private:
