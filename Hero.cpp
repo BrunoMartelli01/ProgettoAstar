@@ -13,7 +13,8 @@ Hero::Hero(int tileWidth, int tileHeight) : Character(1, 1,
                                                       tileWidth, tileHeight, 31, 31) {
 }
 
-bool Hero::moveHero(const Dungeon *d, const sf::Event event) {
+
+bool Hero::move(Dungeon *d, const sf::Vector2i position, const sf::Event event) {
     switch (event.key.code) {
         case (sf::Keyboard::Right):
 
@@ -45,6 +46,7 @@ bool Hero::moveHero(const Dungeon *d, const sf::Event event) {
             break;
     }
     return false;
+
 }
 
 

@@ -69,7 +69,7 @@ bool Dungeon::findPath() {
 
 
     if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED) {
-       // cout << "strada trovata" << endl;
+        // cout << "strada trovata" << endl;
         astarsearch.FreeSolutionNodes();
 
         astarsearch.EnsureMemoryFreed();
@@ -127,9 +127,9 @@ bool Dungeon::makeCorridor(int x, int y, int lenght, int direction) {
 
             //if we're still here, let's start building
             for (ytemp = y; ytemp > (y - len); ytemp--) {
-                setCell(xtemp+1,ytemp,wall);
+                setCell(xtemp + 1, ytemp, wall);
                 setCell(xtemp, ytemp, floor);
-                setCell(xtemp-1,ytemp,wall);
+                setCell(xtemp - 1, ytemp, wall);
             }
             break;
         case 1:
@@ -147,9 +147,9 @@ bool Dungeon::makeCorridor(int x, int y, int lenght, int direction) {
             }
 
             for (xtemp = x; xtemp < (x + len); xtemp++) {
-                setCell(xtemp,ytemp+1,wall);
+                setCell(xtemp, ytemp + 1, wall);
                 setCell(xtemp, ytemp, floor);
-                setCell(xtemp+1,ytemp-1,wall);
+                setCell(xtemp + 1, ytemp - 1, wall);
             }
             break;
         case 2:
@@ -167,9 +167,9 @@ bool Dungeon::makeCorridor(int x, int y, int lenght, int direction) {
             }
 
             for (ytemp = y; ytemp < (y + len); ytemp++) {
-                setCell(xtemp+1,ytemp,wall);
+                setCell(xtemp + 1, ytemp, wall);
                 setCell(xtemp, ytemp, floor);
-                setCell(xtemp-1,ytemp,wall);
+                setCell(xtemp - 1, ytemp, wall);
             }
             break;
         case 3:
@@ -187,9 +187,9 @@ bool Dungeon::makeCorridor(int x, int y, int lenght, int direction) {
             }
 
             for (xtemp = x; xtemp > (x - len); xtemp--) {
-                setCell(xtemp,ytemp+1,wall);
+                setCell(xtemp, ytemp + 1, wall);
                 setCell(xtemp, ytemp, floor);
-                setCell(xtemp,ytemp-1,wall);
+                setCell(xtemp, ytemp - 1, wall);
             }
             break;
     }
@@ -578,12 +578,13 @@ void Dungeon::setYsize(int ysize) {
 }
 
 int Dungeon::getTileInt(int x, int y) const {
-    TileType tile= getTile(x, y);
-    if(tile == TileType::StoneWall || tile  == TileType::DirtWall)
+    TileType tile = getTile(x, y);
+    if (tile == TileType::StoneWall || tile == TileType::DirtWall)
         return 1;
-    if(tile == TileType::DirtFloor || tile  == TileType::Chest || tile == TileType:: UpStairs || tile ==  TileType::DownStairs || tile == TileType::Corridor)
+    if (tile == TileType::DirtFloor || tile == TileType::Chest || tile == TileType::UpStairs ||
+        tile == TileType::DownStairs || tile == TileType::Corridor)
         return 2;
-    if(tile == TileType::Door)
+    if (tile == TileType::Door)
         return 3;
     return 0;
 }

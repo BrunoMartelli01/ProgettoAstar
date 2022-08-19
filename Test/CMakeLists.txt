@@ -6,4 +6,10 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 set(TEST_SOURCE_FILES runAllTests.cpp DungeonTest.cpp)
 add_executable(runAllTests ${TEST_SOURCE_FILES})
-target_link_libraries(runAllTests gtest gtest_main core)
+
+set(SFML_STATIC_LIBRARIES TRUE)
+set(SFML_DIR C:/SFML/lib/cmake/SFML)
+
+find_package(SFML COMPONENTS system window graphics audio network REQUIRED)
+include_directories(c:/SFML/include)
+target_link_libraries(runAllTests gtest gtest_main core sfml-system sfml-window sfml-graphics sfml-audio)

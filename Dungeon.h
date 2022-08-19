@@ -77,7 +77,6 @@ private:
     //of generating a room
     const int chanceRoom;
     const int chanceCorridor;
-
     const int minRoomWidth;
     const int minRoomHeight;
 };

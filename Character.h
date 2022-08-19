@@ -8,11 +8,14 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Window/Event.hpp>
+#include "Dungeon.h"
 
 class Character : public sf::Drawable, public sf::Transformable {
 public:
-    Character(const int posX, const int posY, const std::string spriteCharacter, float scaleX, float scaleY,
-              int rectWidth, int rectHeight, int offsetTop, int offsetLeft, int tileWidth, int tileHeight, int startX,
+    Character(const int posX, const int posY, const std::string spriteCharacter, const float scaleX, const float scaleY,
+              const int rectWidth, const int rectHeight, const int offsetTop, const int offsetLeft, const int tileWidth,
+              const int tileHeight, const int startX, const
               int startY)
             : posX(posX), posY(posY), tileWidth(tileWidth), tileHeight(tileHeight), rectWidth(rectWidth),
               rectHeight(rectHeight), offsetTop(offsetTop), offsetLeft(offsetLeft) {
@@ -27,7 +30,23 @@ public:
         frame = 0;
     }
 
-    virtual ~Character() {};
+    virtual ~Character();
+
+    //metodo move virtuale puramente
+
+
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
+    virtual bool nextFrame();
+
+    sf::Vector2i getPosition() const;
+
+    virtual bool move(Dungeon *d, const sf::Vector2i position, const sf::Event event) = 0;
+
+    bool setPosition(sf::Vector2i position);
+
+
+protected:
 
     virtual void moveUp();
 
@@ -36,14 +55,6 @@ public:
     virtual void moveRight();
 
     virtual void moveLeft();
-
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-
-    virtual bool nextFrame();
-
-    sf::Vector2i getPosition() const;
-
-    bool setPosition(sf::Vector2i position);
 
 private:
     int posX;
@@ -64,4 +75,5 @@ protected:
 
 
 };
+
 #endif //PROGETTOASTAR_CHARACTER_H

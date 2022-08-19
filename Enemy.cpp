@@ -3,6 +3,7 @@
 //
 
 #include "Enemy.h"
+
 Enemy::Enemy(int tileWidth, int tileHeight) : Character(30, 16,
                                                         R"(C:\Users\bruno\CLionProjects\ProgettoAstar\Sprites\enemy.png)",
                                                         1, 0.96, 32, 33, 48, 32, tileWidth, tileHeight, 31 * 30,
@@ -11,16 +12,16 @@ Enemy::Enemy(int tileWidth, int tileHeight) : Character(30, 16,
 
 }
 
-bool Enemy::moveEnemy(Dungeon *d,const sf::Vector2i heroPosition ) {
+
+bool Enemy::move(Dungeon *d, const sf::Vector2i position, const sf::Event event) {
 
 
-        AStarSearch<MapSearchNode> astarsearch;
+    AStarSearch <MapSearchNode> astarsearch;
 
-
-        // Create a start state
-        MapSearchNode endNode(d);
-        endNode.x = heroPosition.x;
-        endNode.y = heroPosition.y;
+    // Create a start state
+    MapSearchNode endNode(d);
+    endNode.x = position.x;
+    endNode.y = position.y;
 
     // Define the goal state
     MapSearchNode startNode(d);
@@ -42,56 +43,50 @@ bool Enemy::moveEnemy(Dungeon *d,const sf::Vector2i heroPosition ) {
     do {
 
         SearchState = astarsearch.SearchStep();
-            SearchSteps++;
-        }
-        while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
+        SearchSteps++;
+    } while (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING);
 
-        if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED ) {
+    if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED) {
 
-            MapSearchNode *node = astarsearch.GetSolutionStart();
+        MapSearchNode *node = astarsearch.GetSolutionStart();
 
-            MapSearchNode * succNode;
-            succNode= astarsearch.GetSolutionNext();
+        MapSearchNode *succNode;
+        succNode = astarsearch.GetSolutionNext();
 
-            int x = node->x-succNode->x;
-            int y = node->y-succNode->y;
+        int x = node->x - succNode->x;
+        int y = node->y - succNode->y;
 
-            if(x==0)
-                if(y<0)
-                    this->moveDown();
-                else
-                    this->moveUp();
-            else if(x<0)
-                this->moveRight();
+        if (x == 0)
+            if (y < 0)
+                this->moveDown();
             else
-                this->moveLeft();
+                this->moveUp();
+        else if (x < 0)
+            this->moveRight();
+        else
+            this->moveLeft();
 
-            if( succNode->x == heroPosition.x && succNode->y == heroPosition.y  )
-                return  false;
-
-            MapSearchNode  *controlNode= astarsearch.GetSolutionNext();
-            if( controlNode->x == heroPosition.x && controlNode->y == heroPosition.y  )
-                return false;
-
-            // Once you're done with the solution you can free the nodes up
-            astarsearch.FreeSolutionNodes();
-
-        }
-        else if( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED ) {
-
-            astarsearch.EnsureMemoryFreed();
+        if (succNode->x == position.x && succNode->y == position.y)
             return false;
-        }
 
-        // Display the number of loops the search went through
+        MapSearchNode *controlNode = astarsearch.GetSolutionNext();
+        if (controlNode->x == position.x && controlNode->y == position.y)
+            return false;
+
+        // Once you're done with the solution you can free the nodes up
+        astarsearch.FreeSolutionNodes();
+
+    } else if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_FAILED) {
+
+        astarsearch.EnsureMemoryFreed();
+        return false;
+    }
+
+    // Display the number of loops the search went through
 
 
     astarsearch.EnsureMemoryFreed();
-        return true;
-
-
-
+    return true;
 
 
 }
-

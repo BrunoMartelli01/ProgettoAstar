@@ -19,11 +19,7 @@ public:
 
     virtual ~Hero() {};
 
-    bool moveHero(const Dungeon *d, const sf::Event event);
-
-
-private:
-
+    bool move(Dungeon *d, const sf::Vector2i posisition, const sf::Event event) override;
 
 };
 
