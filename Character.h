@@ -13,6 +13,7 @@
 
 class Character : public sf::Drawable, public sf::Transformable {
 public:
+
     Character(const int posX, const int posY, const std::string spriteCharacter, const float scaleX, const float scaleY,
               const int rectWidth, const int rectHeight, const int offsetTop, const int offsetLeft, const int tileWidth,
               const int tileHeight, const int startX, const
@@ -30,16 +31,14 @@ public:
         frame = 0;
     }
 
-    virtual ~Character();
-
-    //metodo move virtuale puramente
+    virtual ~Character() {};
 
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     virtual bool nextFrame();
 
-    sf::Vector2i getPosition() const;
+    sf::Vector2i getPos() const;
 
     virtual bool move(Dungeon *d, const sf::Vector2i position, const sf::Event event) = 0;
 

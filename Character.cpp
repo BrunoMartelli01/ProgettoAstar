@@ -3,7 +3,7 @@
 //
 #include "Character.h"
 
-sf::Vector2i Character::getPosition() const {
+sf::Vector2i Character::getPos() const {
     sf::Vector2i position(posX, posY);
     return position;
 }
@@ -29,7 +29,7 @@ void Character::moveUp() {
     sf::Vector2i position(0, -1);
     framePosition.x = 0;
     framePosition.y = -7.35f;
-    Character::setPosition(Character::getPosition() + position);
+    Character::setPosition(Character::getPos() + position);
     textureRect = sf::IntRect(0, 3 * offsetTop, rectWidth, rectHeight);
     return;
 
@@ -41,7 +41,7 @@ void Character::moveDown() {
     sf::Vector2i position(0, 1);
     framePosition.x = 0;
     framePosition.y = 7.35f;
-    Character::setPosition(Character::getPosition() + position);
+    Character::setPosition(Character::getPos() + position);
     textureRect = sf::IntRect(0, 0, rectWidth, rectHeight);
     return;
 
@@ -52,7 +52,7 @@ void Character::moveRight() {
     framePosition.y = 0;
     framePosition.x = 7.35f;
     sf::Vector2i position(1, 0);
-    Character::setPosition(Character::getPosition() + position);
+    Character::setPosition(Character::getPos() + position);
     textureRect = sf::IntRect(0, 2 * offsetTop, rectWidth, rectHeight);
 
     return;
@@ -63,7 +63,7 @@ void Character::moveLeft() {
     framePosition.x = -7.35f;
 
     sf::Vector2i position(-1, 0);
-    Character::setPosition(Character::getPosition() + position);
+    Character::setPosition(Character::getPos() + position);
     textureRect = sf::IntRect(0, offsetTop, rectWidth, rectHeight);
 
     return;
@@ -74,7 +74,7 @@ bool Character::nextFrame() {
     if (frame == 4) {
         frame = 0;
         textureRect.left = frame * offsetLeft;
-        spriteCharacter.setPosition(Character::getPosition().x * tileWidth, Character::getPosition().y * tileHeight);
+        spriteCharacter.setPosition(Character::getPos().x * tileWidth, Character::getPos().y * tileHeight);
         spriteCharacter.setTextureRect(textureRect);
         return false;
     }
@@ -88,3 +88,4 @@ bool Character::nextFrame() {
 
 
 }
+

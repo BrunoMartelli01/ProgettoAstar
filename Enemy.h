@@ -15,8 +15,6 @@ public:
 
     ~Enemy() {};
 
-    bool moveEnemy(Dungeon *d, const sf::Vector2i heroPosition);
-
     bool move(Dungeon *d, const sf::Vector2i position, const sf::Event event) override;
 
 };

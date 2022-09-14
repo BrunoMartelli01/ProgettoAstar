@@ -18,26 +18,26 @@ bool Hero::move(Dungeon *d, const sf::Vector2i position, const sf::Event event) 
     switch (event.key.code) {
         case (sf::Keyboard::Right):
 
-            if (d->isLegalMove(1, 0, this->getPosition())) {
+            if (d->isLegalMove(1, 0, this->getPos())) {
                 this->moveRight();
                 return true;
             }
             break;
         case (sf::Keyboard::Left):
-            if (d->isLegalMove(-1, 0, this->getPosition())) {
+            if (d->isLegalMove(-1, 0, this->getPos())) {
                 this->moveLeft();
                 return true;
             }
             break;
 
         case (sf::Keyboard::Up):
-            if (d->isLegalMove(0, -1, this->getPosition())) {
+            if (d->isLegalMove(0, -1, this->getPos())) {
                 this->moveUp();
                 return true;
             }
             break;
         case (sf::Keyboard::Down):
-            if (d->isLegalMove(0, 1, this->getPosition())) {
+            if (d->isLegalMove(0, 1, this->getPos())) {
                 this->moveDown();
                 return true;
             }

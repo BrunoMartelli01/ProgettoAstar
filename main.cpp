@@ -5,11 +5,13 @@
 #include "TileMap.h"
 #include "Dungeon.h"
 #include <Windows.h>
+
 #include "hero.h"
 #include "Enemy.h"
 
 
 using namespace std;
+
 
 int main() {
 
@@ -25,7 +27,13 @@ int main() {
         Enemy e;
 
         TileMap map;
-        dungeon.createDungeon(32, 18, 50);
+
+
+
+        //dungeon.createDungeon(32, 18, 50);
+        dungeon.createDungeon(R"(C:\Users\bruno\CLionProjects\ProgettoAstar\Test\map.txt)", 32, 18);
+
+
         if (!map.load("C:/Users/bruno/CLionProjects/ProgettoAstar/Sprites/tilemap.png", sf::Vector2u(62, 62), &dungeon,
                       32, 18))
             return -1;
@@ -52,8 +60,9 @@ int main() {
                     case sf::Event::KeyPressed:
                         if (timeMove.getElapsedTime().asMilliseconds() > 250) {
 
-                            if (h.move(&dungeon, h.getPosition(), event)) {
-                                endGame = e.move(&dungeon, h.getPosition(), event);
+                            if (h.move(&dungeon, h.getPos(), event)) {
+                                e.getPos();
+                                endGame = e.move(&dungeon, h.getPos(), event);
                                 drawMove = true;
                                 timeMove.restart();
                             }

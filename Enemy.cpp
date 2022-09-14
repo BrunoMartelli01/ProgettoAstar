@@ -16,7 +16,7 @@ Enemy::Enemy(int tileWidth, int tileHeight) : Character(30, 16,
 bool Enemy::move(Dungeon *d, const sf::Vector2i position, const sf::Event event) {
 
 
-    AStarSearch <MapSearchNode> astarsearch;
+    AStarSearch<MapSearchNode> astarsearch;
 
     // Create a start state
     MapSearchNode endNode(d);
@@ -25,8 +25,8 @@ bool Enemy::move(Dungeon *d, const sf::Vector2i position, const sf::Event event)
 
     // Define the goal state
     MapSearchNode startNode(d);
-    startNode.x = Character::getPosition().x;
-    startNode.y = Character::getPosition().y;
+    startNode.x = this->getPos().x;
+    startNode.y = Character::getPos().y;
 
 
     // Set Start and goal states

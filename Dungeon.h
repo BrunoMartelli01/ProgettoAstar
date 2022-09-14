@@ -30,9 +30,14 @@ public:
 
     bool createDungeon(int inx, int iny, int inobj = 10);
 
+    bool createDungeon(std::string file, int sizeX, int sizeY);
+
     TileType getTile(int x, int y) const;
 
+
     int getTileInt(int x, int y) const;
+
+    TileType intToTile(char t) const;
 
     int getCell(int x, int y) const;
 
@@ -48,6 +53,7 @@ public:
 
     bool isLegalMove(int x, int y, const sf::Vector2i position) const;
 
+    std::string toString() const;
 private:
     bool findPath();
 

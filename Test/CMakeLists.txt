@@ -5,7 +5,7 @@ set(gtest_SOURCE_DIR, ./lib/googletest/)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 set(TEST_SOURCE_FILES runAllTests.cpp DungeonTest.cpp)
-add_executable(runAllTests ${TEST_SOURCE_FILES})
+add_executable(runAllTests ${TEST_SOURCE_FILES} ${SOURCE_FILES})
 
 set(SFML_STATIC_LIBRARIES TRUE)
 set(SFML_DIR C:/SFML/lib/cmake/SFML)

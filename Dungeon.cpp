@@ -12,6 +12,7 @@
 #include <fstream>
 #include "Dungeon.h"
 #include "Astar_algorithm/findpath.h"
+#include "Enemy.h"
 #include <time.h>
 #include <SFML/System/Vector2.hpp>
 // uncomment to get some additional debugging prints. Check how conditional compilation works
@@ -61,6 +62,7 @@ bool Dungeon::findPath() {
     unsigned int SearchState;
     unsigned int SearchSteps = 0;
 
+
     do {
 
         SearchState = astarsearch.SearchStep();
@@ -69,6 +71,7 @@ bool Dungeon::findPath() {
 
 
     if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED) {
+        MapSearchNode *node = astarsearch.GetSolutionEnd();
         // cout << "strada trovata" << endl;
         astarsearch.FreeSolutionNodes();
 
@@ -626,5 +629,67 @@ bool Dungeon::isLegalCell(sf::Vector2i position) const {
         default:
             return false;
     };
+}
+
+bool Dungeon::createDungeon(std::string file, int sizeX, int sizeY) {
+    this->xsize = sizeX;
+    this->ysize = sizeY;
+    if (dungeonMap)
+        delete[] dungeonMap;
+    //redefine the map var, so it's adjusted to our new map size
+    dungeonMap = new TileType[xsize * ysize];
+    fstream fileMap;
+    fileMap.open(file, ios::in); //open a file to perform read operation using file object
+    if (fileMap.is_open()) { //checking whether the file is open
+        string lineMap;
+        int j = 0;
+
+        while (getline(fileMap, lineMap)) { //read data from file object and put it into string.
+            for (int i = 0; i < sizeX; i++) {
+                int t = lineMap.at(i);
+                this->setCell(i, j, this->intToTile(t));
+            } //print the data of the string
+            j++;
+        }
+        fileMap.close();
+        this->findPath();
+        return true;//close the file object.
+    }
+    return false;
+}
+
+
+std::string Dungeon::toString() const {
+    std::string s;
+    for (int i = 0; i < 18; i++) {
+        for (int j = 0; j < 32; j++) {
+            int cell = this->getCell(j, i);
+            if (cell == 9) {
+                s += 'X';
+
+            } else {
+                s += ' ';
+
+            }
+        }
+        s += '\n';
+    }
+    return s;
+}
+
+TileType Dungeon::intToTile(char t) const {
+
+    switch (t) {
+        case '1':
+            return TileType::StoneWall;
+        case '2':
+            return TileType::DirtFloor;
+        case '3':
+            return TileType::Door;
+
+        default:
+            return TileType::Unused;
+    }
+
 }
 
