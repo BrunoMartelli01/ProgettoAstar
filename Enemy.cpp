@@ -26,7 +26,7 @@ bool Enemy::move(Dungeon *d, const sf::Vector2i position, const sf::Event event)
     // Define the goal state
     MapSearchNode startNode(d);
     startNode.x = this->getPos().x;
-    startNode.y = Character::getPos().y;
+    startNode.y = this->getPos().y;
 
 
     // Set Start and goal states

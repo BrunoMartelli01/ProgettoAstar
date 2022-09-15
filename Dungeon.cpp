@@ -73,6 +73,10 @@ bool Dungeon::findPath() {
     if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED) {
         MapSearchNode *node = astarsearch.GetSolutionEnd();
         // cout << "strada trovata" << endl;
+
+
+
+
         astarsearch.FreeSolutionNodes();
 
         astarsearch.EnsureMemoryFreed();

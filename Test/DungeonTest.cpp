@@ -18,8 +18,11 @@ class TestDungeon : public ::testing::Test {
 public:
     virtual void SetUp() {
         d.createDungeon(R"(C:\Users\bruno\CLionProjects\ProgettoAstar\Test\map.txt)", 32, 18);
+
     }
 
+
+    int test[32][18];
     Dungeon d;
     std::string correctPath = R"(C:\Users\bruno\CLionProjects\ProgettoAstar\Test\correctPath.txt)";
 
@@ -34,21 +37,52 @@ TEST_F(TestDungeon, setDungeon) {
 
 TEST_F(TestDungeon, AstarTest) {
 
+    for (int y = 0; y < 18; y++) {
+        for (int x = 0; x < 32; x++) {
+            test[x][y] = 5;
+            if (d.getCell(x, y) == 9)
+                std::cout << "x ";
+            else std::cout << "  ";
+        }
+        std::cout << '\n';
+    }
     fstream path;
     path.open(correctPath, ios::in);
     sf::Vector2i start = sf::Vector2i(1, 1);
-    std::string pos;
+    sf::Event ev;
+    std::string correctPos;
     Enemy e;
+    sf::Vector2i pos = e.getPos();
+    fstream f;
+
 
     int x;
     int y;
     if (path.is_open())
-        while (getline(path, pos)) {
+        while (getline(path, correctPos)) {
 
-            x = pos[0] - '0';
-            y = pos[1] - '0';
+
+            x = stoi(correctPos);
+            EXPECT_EQ(x, pos.x);
+
+            getline(path, correctPos);
+            y = stoi(correctPos);
+
+            EXPECT_EQ(y, pos.y);
+            e.move(&d, start, ev);
+            pos = e.getPos();
+            test[x][y] = 0;
+        }
+    for (int y = 0; y < 18; y++) {
+        for (int x = 0; x < 32; x++) {
+            if (test[x][y] == 0)
+                std::cout << "0 ";
+            else if (d.getCell(x, y) == 9)
+                std::cout << "x ";
+            else std::cout << "  ";
 
         }
-
+        std::cout << '\n';
+    }
 
 }
