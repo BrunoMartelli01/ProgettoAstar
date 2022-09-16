@@ -5,7 +5,7 @@
 #include "Enemy.h"
 
 Enemy::Enemy(int tileWidth, int tileHeight) : Character(30, 16,
-                                                        R"(C:\Users\bruno\CLionProjects\ProgettoAstar\Sprites\enemy.png)",
+                                                        R"(.\Sprites\enemy.png)",
                                                         1, 0.96, 32, 33, 48, 32, tileWidth, tileHeight, 31 * 30,
                                                         31 * 16) {
 

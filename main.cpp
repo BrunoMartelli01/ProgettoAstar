@@ -31,10 +31,10 @@ int main() {
 
 
         //dungeon.createDungeon(32, 18, 50);
-        dungeon.createDungeon(R"(C:\Users\bruno\CLionProjects\ProgettoAstar\Test\map.txt)", 32, 18);
+        dungeon.createDungeon(R"(.\Test\map.txt)", 32, 18);
 
 
-        if (!map.load("C:/Users/bruno/CLionProjects/ProgettoAstar/Sprites/tilemap.png", sf::Vector2u(62, 62), &dungeon,
+        if (!map.load("./Sprites/tilemap.png", sf::Vector2u(62, 62), &dungeon,
                       32, 18))
             return -1;
 

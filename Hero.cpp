@@ -8,7 +8,7 @@
 #include "Dungeon.h"
 
 Hero::Hero(int tileWidth, int tileHeight) : Character(1, 1,
-                                                      R"(C:\Users\bruno\CLionProjects\ProgettoAstar\Sprites\hero.png)",
+                                                      R"(.\Sprites\hero.png)",
                                                       0.61, 0.61, 52, 52, 66, 64,
                                                       tileWidth, tileHeight, 31, 31) {
 }

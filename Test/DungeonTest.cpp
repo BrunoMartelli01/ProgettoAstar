@@ -17,14 +17,14 @@
 class TestDungeon : public ::testing::Test {
 public:
     virtual void SetUp() {
-        d.createDungeon(R"(C:\Users\bruno\CLionProjects\ProgettoAstar\Test\map.txt)", 32, 18);
+        d.createDungeon(R"(.\Test\map.txt)", 32, 18);
 
     }
 
 
     int test[32][18];
     Dungeon d;
-    std::string correctPath = R"(C:\Users\bruno\CLionProjects\ProgettoAstar\Test\correctPath.txt)";
+    std::string correctPath = R"(.\Test\correctPath.txt)";
 
 };
 
